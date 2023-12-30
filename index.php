@@ -12,6 +12,7 @@
         crossorigin="anonymous"></script>
 
     <?php include("db.php"); ?>
+    <?php include("handleForm.php"); ?>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -35,7 +36,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="adminDistrict">Административный округ</label>
-                        <select class="form-control" id="adminDistrict" name="adminDistrict">
+                        <select class="form-control" id="district" name="district">
                             <option value="none">Не выбрано</option>
                             <?php
                             $result = mysqli_query($mysql, "SELECT DISTINCT district FROM `orders`");
@@ -79,7 +80,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="admindistrict">тип объекта</label>
+                        <label for="admindistrict">Льготы</label>
                         <select class="form-control" id="lgot" name="lgot">
                             <option value="">Не выбрано</option>
                             <?php
@@ -109,7 +110,7 @@
                         <label for="seatsTo">Количество посадочных мест до</label>
                         <input type="number" class="form-control" id="seatsTo" name="seatsTo" min="0">
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="searchRecords()">Найти</button>
+                    <button class="btn btn-primary" type="submit">Найти</button>
             </form>
         </div>
 
@@ -128,7 +129,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    $result = mysqli_query($mysql, "SELECT * FROM `orders`");
+                    $result = mysqli_query($mysql, getTable($currentPage));
 
                     while ($row = mysqli_fetch_assoc($result)) {
                         ?>
@@ -176,14 +177,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="createRecordForm">
+                        <form id="createRecordForm" method="post">
                             <div class="form-group col-md-12">
                                 <label for="name">Наименование</label>
                                 <input type="text" class="form-control" id="name" name="name">
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="adminDistrict">Административный округ</label>
-                                <select class="form-control" id="adminDistrict" name="adminDistrict">
+                                <select class="form-control" id="disctrict" name="district">
                                     <option value="none">Не выбрано</option>
                                     <?php
                                     $result = mysqli_query($mysql, "SELECT DISTINCT district FROM `orders`");
@@ -197,7 +198,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="admindistrict">тип объекта</label>
+                                <label for="objectType">тип объекта</label>
                                 <select class="form-control" id="objectType" name="objectType">
                                     <option value="none">Не выбрано</option>
                                     <?php
@@ -212,7 +213,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="adminDistrict">Является сетевой</label>
+                                <label for="isNet">Является сетевой</label>
                                 <select class="form-control" id="isNet" name="isNet">
                                     <option value="none">Не выбрано</option>
                                     <?php
@@ -227,7 +228,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="admindistrict">тип объекта</label>
+                                <label for="lgot">тип объекта</label>
                                 <select class="form-control" id="lgot" name="lgot">
                                     <option value="">Не выбрано</option>
                                     <?php
