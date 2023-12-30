@@ -1,0 +1,51 @@
+body {
+  background-color: #f5f5dc; /* Бежевый */
+  color: #000000; /* Черный */
+}
+
+.navbar {
+  background-color: #add8e6; /* Голубой */
+}
+
+.navbar-dark .navbar-brand {
+  color: #800000; /* Коричневый */
+}
+
+.navbar-dark .navbar-toggler-icon {
+  background-color: #008080; /* Изумрудный */
+}
+
+.container {
+  background-color: #f5f5dc; /* Бежевый */
+  border: 1px solid #008080; /* Изумрудный */
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background-color: #8b0000; /* Красный */
+  border-color: #8b0000; /* Красный */
+}
+
+.btn-outline-success {
+  color: #008000; /* Зеленый */
+  border-color: #008000; /* Зеленый */
+}
+
+.table {
+  background-color: #ffffff; /* Белый */
+}
+
+.footer {
+  background-color: #f5f5dc; /* Бежевый */
+  padding: 15px;
+  text-align: center;
+}
+
+.bg-dark {
+  background-color: #000;
+}
+
+main {
+  min-height: 100vh;
+}
