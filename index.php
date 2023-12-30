@@ -5,7 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Административная панель</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <?php include("db.php"); ?>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -18,7 +24,7 @@
     </header>
     <main>
         <!-- Область для всплывающих уведомлений (Alerts) -->
-        <div class="container mt-3"></div>
+        <div class="container mt-3" id="alerts"></div>
 
         <div class="container mt-3">
             <form id="searchForm">
@@ -31,24 +37,60 @@
                         <label for="adminDistrict">Административный округ</label>
                         <select class="form-control" id="adminDistrict" name="adminDistrict">
                             <option value="none">Не выбрано</option>
+                            <?php
+                            $result = mysqli_query($mysql, "SELECT DISTINCT district FROM `orders`");
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                <option value="<?php echo $row['district'] ?>">
+                                    <?php echo $row['district'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="admindistrict">тип объекта</label>
                         <select class="form-control" id="objectType" name="objectType">
                             <option value="none">Не выбрано</option>
+                            <?php
+                            $result = mysqli_query($mysql, "SELECT DISTINCT objectType FROM `orders`");
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                <option value="<?php echo $row['objectType'] ?>">
+                                    <?php echo $row['objectType'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="adminDistrict">Является сетевой</label>
                         <select class="form-control" id="isNet" name="isNet">
                             <option value="none">Не выбрано</option>
+                            <?php
+                            $result = mysqli_query($mysql, "SELECT DISTINCT isNet FROM `orders`");
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                <option value="<?php echo $row['isNet'] ?>">
+                                    <?php echo $row['isNet'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="admindistrict">тип объекта</label>
                         <select class="form-control" id="lgot" name="lgot">
                             <option value="">Не выбрано</option>
+                            <?php
+                            $result = mysqli_query($mysql, "SELECT DISTINCT lgot FROM `orders`");
+
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                <option value="<?php echo $row['lgot'] ?>">
+                                    <?php echo $row['lgot'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -67,8 +109,6 @@
                         <label for="seatsTo">Количество посадочных мест до</label>
                         <input type="number" class="form-control" id="seatsTo" name="seatsTo" min="0">
                     </div>
-
-
                     <button type="button" class="btn btn-primary" onclick="searchRecords()">Найти</button>
             </form>
         </div>
@@ -76,19 +116,43 @@
         <!-- Таблица с данными о предприятиях общественного питания -->
         <div class="container mt-3">
             <table class="table">
-                <!-- Заголовки таблицы -->
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Название</th>
+                        <th scope="col">Является сетевым</th>
+                        <th scope="col">Вид объекта</th>
                         <th scope="col">Адрес</th>
-                        <!-- Добавьте здесь дополнительные заголовки, если необходимо -->
-                        <th scope="col">Действия</th>
+                        <th scope="col">Кол-во мест</th>
                     </tr>
                 </thead>
-                <!-- Тело таблицы -->
                 <tbody>
-                    <!-- Данные будут выводиться здесь -->
+                    <?php
+                    $result = mysqli_query($mysql, "SELECT * FROM `orders`");
+
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <tr>
+                            <th>
+                                <?php echo $row['id'] ?>
+                            </th>
+                            <th>
+                                <?php echo $row['name'] ?>
+                            </th>
+                            <th>
+                                <?php echo $row['isNet'] ?>
+                            </th>
+                            <th>
+                                <?php echo $row['objectType'] ?>
+                            </th>
+                            <th>
+                                <?php echo $row['address'] ?>
+                            </th>
+                            <th>
+                                <?php echo $row['seats'] ?>
+                            </th>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -121,29 +185,61 @@
                                 <label for="adminDistrict">Административный округ</label>
                                 <select class="form-control" id="adminDistrict" name="adminDistrict">
                                     <option value="none">Не выбрано</option>
+                                    <?php
+                                    $result = mysqli_query($mysql, "SELECT DISTINCT district FROM `orders`");
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                        <option value="<?php echo $row['district'] ?>">
+                                            <?php echo $row['district'] ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="admindistrict">тип объекта</label>
                                 <select class="form-control" id="objectType" name="objectType">
                                     <option value="none">Не выбрано</option>
+                                    <?php
+                                    $result = mysqli_query($mysql, "SELECT DISTINCT objectType FROM `orders`");
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                        <option value="<?php echo $row['objectType'] ?>">
+                                            <?php echo $row['objectType'] ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="adminDistrict">Является сетевой</label>
                                 <select class="form-control" id="isNet" name="isNet">
                                     <option value="none">Не выбрано</option>
+                                    <?php
+                                    $result = mysqli_query($mysql, "SELECT DISTINCT isNet FROM `orders`");
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                        <option value="<?php echo $row['isNet'] ?>">
+                                            <?php echo $row['isNet'] ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="admindistrict">тип объекта</label>
                                 <select class="form-control" id="lgot" name="lgot">
                                     <option value="">Не выбрано</option>
+                                    <?php
+                                    $result = mysqli_query($mysql, "SELECT DISTINCT lgot FROM `orders`");
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                        <option value="<?php echo $row['lgot'] ?>">
+                                            <?php echo $row['lgot'] ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label for="seatsFrom">Количество посадочных мест</label>
-                                <input type="number" class="form-control" id="seatsFrom" name="seatsFrom" min="0">
                             </div>
                             <button type="button" class="btn btn-primary" onclick="submitCreateRecordForm()">Создать
                                 запись</button>
@@ -173,8 +269,13 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 
 </body>
 
